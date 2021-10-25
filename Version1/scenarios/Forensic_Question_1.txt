@@ -1,0 +1,6 @@
+The Audit IT Mojang Team request a quick audit of all users that are allowed to use OpenSSH on this machine. In order to verify only authorized users are allowed to remotely connect to this machine.
+
+(Example: user1 user2 user3)
+(Hint: Put a space between each user)
+
+ANSWER: 

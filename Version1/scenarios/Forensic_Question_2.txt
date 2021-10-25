@@ -1,0 +1,7 @@
+The fired employee left an encrypted message on this machine, as his last act of illegal actions made in this machine. Please Decrypt the following message so we may utilize it in court.
+
+Encrypted Message: WW91ciBMYW1lIFNlcnZlciBoYXMgYmVlbiBQV05FRCAtSm9obg==
+
+(Example: Hidden Message)
+
+ANSWER: 
