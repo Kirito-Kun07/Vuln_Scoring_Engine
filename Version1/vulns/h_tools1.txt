@@ -1,0 +1,2 @@
+ii  john                                       1.8.0-2                                         amd64        active password cracking tool
+ii  john-data                                  1.8.0-2                                         all          active password cracking tool - character sets
