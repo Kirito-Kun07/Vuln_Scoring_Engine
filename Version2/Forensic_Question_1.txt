@@ -1,0 +1,16 @@
+One of our server admins sent a report to our IT Department about a weird suspicious file they found at the "/" directory. Thus our internal Audit team has requested that you provide them information on matter. The name of the suspicious file, the owner (user) and the group owner of the file.
+
+(HINT: Try researching the "ls" command)
+(HINT: Answer in the exact order mentioned above)
+
+ANSWER:  
+ANSWER: 
+ANSWER: 
+
+
+
+===========================After-Wards===========================
+After you have completed providing the Audit team the information they need. Our IT Security team has tasked you to remove the user and group that have ownership of the suspicious file from the system. Including the file.
+
+
+, Thank You.

@@ -1,0 +1,9 @@
+Based on our Network logs, we have found suspicous traffic coming from this workstation. Our Network Team believe that there is a backdoor listening on this machine. 
+
+What port is the backdoor on?
+And what program is it running for the backdoor?
+(Hint: What commands displays information on ports?)
+(Hint: Use "sudo" for more information)
+
+ANSWER: 
+ANSWER: 

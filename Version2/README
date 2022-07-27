@@ -1,0 +1,56 @@
+====================================================================
+Congratulations on last week's job. Now we need you to secure another workstation of ours.
+
+Forensic Questions:
+
+There are text files in your Desktop, where we will ask you to run forensics on this machine for specific information we need. Thus be aware of the changes you do, if you haven't answered the Forensic Questions.
+
+UBUNTU 16.04:
+
+It is company policy to use the latest software for Ubuntu 16.04. All users must have complex passwords, although this may not be enforced on this workstation. Only authorized users are permitted to access this machine. Unauthorized "hacking tools", "games" and media files are strictly prohibited and must be removed. 
+
+We ask that you configure our critical services to be secure and up-to-date. In addition we want you to disable the guest user and configure secure logon settings through lightdm.
+
+Workstation Tasks:
+-------------------
+Task 1:
+We want to clear way to deploy a new Minecrat web service on this server. Thus, we need you to install and run a simple Apache2 web server. Confirm it's running, by visiting the webpage in your web browser. 
+
+Task 2:
+For this specific workstation we want you to install 2 security programs, a security audit tool called "lynis" and an anti-virus tool called "clamav". 
+
+Payment will be Distributed after your Job is Done once again.
+Thank you for work.
+
+Critical Services:
+	SSHD(Openssh-server)
+	HTTPD(Apache2-Server)
+Admins:
+
+<it_support>
+	Password: S3cur1ty!#
+<mojang>
+	Password: M1neCr@ftRules!
+<mcserver>
+	Password: $up3rAdm1n!!
+<steve>
+	Password: Neth3r1te!
+<alex>
+	Password: Al3x1sBett3r#
+Users:
+	<notch>
+	<creeper>
+	<villager2>
+	<bestw0lf>
+	<junkboy>
+	<irong0lem>
+	<ourmine>
+	<>
+
+=======================For_Students=============================
+Beginners Students Should Achieve a Minimum of 40 points
+Intermediate Students Should Achieve a Mimimun of 60 points
+
+You are allowed to help each other out.
+Good Luck!
+================================================================

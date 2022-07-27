@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html lang='en'>
+
+<head>
+<title>Scoring Report</title>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<meta http-equiv='refresh' content='30;url=ScoringReport.html'>
+
+<link rel='stylesheet' href='.ScoringReport.css'>
+</head>
+<body>
+<div class='main'>
+<div class='text'>
+<div class='binary' data-binary='1010 0001 00011010 10110101'>
+
+<h1>CP Linux Beginner/Intermediate Training Image#2</h1>
+
+<p align=center style='width:100%;text-align:center;'>
+<img align=middle class='L8_style' src='.layer_8.png' width='212px' height='212px'>
+</p>
+
+<h2>Report Generated At: <span id='datetime'></span></h2>
+
+<h3 class='center'>Current Team ID: PRO <span style='color:red'>--</span></h3>
+
+<h2><span style='color:red' class=sed>0</span> out of <span style='color:red'>100</span> points received</h2>
+
+<p><b>This is your most recent scoring report:</b></p>
+
+<a href='https://www.youtube.com/watch?v=pBrCzsgDpYA'>Click here to see the most recent scoring report with feedback enabled</a><br>
+<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'>Click here to view the public scoreboard</a><br>
+<p>
+<h3>Connection Status: <span style='color:red'>Epic</span></h3>
+
+<h3><span style='color:red'>0</span> penalties assessed, for a loss of <span style='color:red'>0</span> points:</h3>
+
+<p>
+
+</p>
+<h3><span style='color:red' class=sed>0</span> out of <span style='color:red'>21</span> scored security issues fixed, for a gain of <span style='color:red' class=sed>0</span> points:</h3>
+<p>
+
+</p><p align='center' style='text-align: center;'><i>This is a part of the CSUN Layer 8 Computer Security Club Cyberpatriot Trainings</i></p></div></div></div><p style='text-align:right; bottom: auto; color:black;'>&copy;Diego Cruz</p></body><script>
+var bin = document.querySelectorAll('.binary');
+[].forEach.call(bin, function(el) {
+	el.dataset.binary = Array(4096).join(el.dataset.binary + ' ')
+});
+
+var dt = new Date();
+
+document.getElementById('datetime').innerHTML = (('0'+dt.getHours()).slice(-2)) +':'+ (('0'+dt.getMinutes()).slice(-2)) + ':'+ (('0'+dt.getSeconds()).slice(-2)) + ' '+ ((dt.getFullYear()) +'-'+ (('0'+(dt.getMonth()+1)).slice(-2)) +'-'+ ('0'+dt.getDate()).slice(-2)) + ' UTC';
+</script>
