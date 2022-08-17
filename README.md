@@ -1,2 +1,2 @@
-<h3 align="center">Vulnerability Scoring Engine</h3>
+<h2 align="center">Vulnerability Scoring Engine</h2>
 
