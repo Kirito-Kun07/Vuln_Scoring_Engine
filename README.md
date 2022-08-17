@@ -2,5 +2,5 @@
 
 ## About The Project
 
-#Desceiption:
-'This project's Objective is to provide a mimic Cyberpatriot/Hivestorm competition environment for standalone custom Linux Images for students/coaches to create for cybersecurity'
+# Description:
+`This project's Objective is to provide a mimic Cyberpatriot/Hivestorm competition environment for standalone custom Linux Images for students/coaches to create for cybersecurity`
