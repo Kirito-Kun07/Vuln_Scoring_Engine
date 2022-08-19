@@ -1,5 +1,5 @@
 #!/usr/bin/python3.6
-from glob import iglob
+#from glob import iglob
 import os
 o = os.popen
 
@@ -100,11 +100,11 @@ def defensive_countermeasure():
         if (": active" in str(c[0])):
                 points += 2
                 vulns += 1
-                report_append.write("<h3>Uncomplicated Firewall (UFW) Protection Has Been Enabled&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+                report_append.write("<h3>Uncomplicated Firewall (UFW) Protection has been Enabled&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
         if (": on" in str(c[1])):
                 points += 2
                 vulns += 1
-                report_append.write("<h3>Uncomplicated Firewall (UFW) Logging Has Been Enabled&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+                report_append.write("<h3>Uncomplicated Firewall (UFW) Logging has been Enabled&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
         if ("(medium)" in str(c[1])):
                 points += 2
                 vulns += 1
@@ -147,27 +147,131 @@ def defensive_countermeasure():
                 report_append.write("<h3>Rkhunter is Installed&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
 def forensic_question():
-
+        c = o("cat /home/it_support/Desktop/Forensic_Question_1")
+        if("nc.traditional" and "1337" in str(c[0])):
+                report_append.write("<h3>Forensic Question 1 Is Correct&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+                points = (points + 2)
+                vulns = (vulns + 1)
+        
+        c = o("dpkg -l | grep 'docker'").read().split('\n')
+        if("docker" in str(c[0])):
+                report_append.write("<h3>Inject Docker Installation Task has been Completed&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+                points = (points + 2)
+                vulns = (vulns + 1)
 def local_policy():
+        c = o("grep 'net.ipv4.tcp_syncookies' /etc/sysctf.conf").read().split('\n')
+        if ("1" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>IPv4 TCP SYN cookies have been Enabled <i>(net.ipv4.tcp_syncookies = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("grep 'net.ipv4.conf.all.rp_filter' /etc/sysctl.conf").read().split('\n')
+        if ("1" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>IPv4 IP Spoofing Protection has been Enabled <i>(net.ipv4.conf.all.rp_filter = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("grep 'net.ipv4.ip_forward' /etc/sysctl.conf").read().split('\n')
+        if ("0" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>IPv4 Forwarding has been Disabled <i>(net.ipv4.ip_forward = 0)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("grep 'net.ipv4.icmp_echo_ignore_broadcasts' /etc/sysctl.conf").read().split('\n')
+        if ("1" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>IPv4 Ignore Broadcast ICMP ECHO Packets has been Enabled <i>(net.ipv4.icmp_echo_ignore_broadcasts = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("grep 'kernel.randomize_va_space' /etc/sysctl.conf").read().split('\n')
+        if ("2" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Address Space Layout Randomization (ASLR) is Enabled <i>( = )</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
 
 def malware():
 
 def operating_system_updates():
+        c = o("grep 'deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main multiverse restricted universe' /etc/apt/sources.list").read().split('\n')
+        if ("deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main multiverse restricted universe" in str([0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Misconfigured Reccomended Updates Source is Fixed (sources.list)&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
-        
         c = o("grep 'deb http://security.ubuntu.com/ubuntu/ bionic-security main multiverse restricted universe' /etc/apt/sources.list").read().split('\n')
         if ("deb http://security.ubuntu.com/ubuntu/ bionic-security main multiverse restricted universe" in str(c[0])):
                 points += 2
                 vulns += 1
                 report_append.write("<h3>Enabled Important Security Updates&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 def prohibited_files():
-
+        #TODO: change user in path below
+        c = o("find /home/steve/Pictures/ -iname '.meme.png'").read().split('\n')
+        if ("meme" in str([0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Removed Prohibited png File&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 def service_auditing():
 
 def uncategorized_operating_system_settings():
 
 def unwanted_software():
+        c = o("dpkg -l | grep 'telnetd'").read().split('\n')
+        if ("telnetd" in str([0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Telnetd Service has been Disabled or Removed&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
+        c = o("dpkg -l | grep 'vsftpd'").read().split('\n')
+        if ("vsftpd" in str([0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>VSFTPd Service has been Disabled or Removed&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("dpkg -l | grep 'minetest-server'").read().split('\n')
+        if ("minetest-server" in str([0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Minetest-Server Service has been Disabled or Removed&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("dpkg -l | grep 'nmap'").read().split('\n')
+        if ("nmap" in str([0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Prohibited Software Nmap Removed&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("dpkg -l | grep 'john'").read().split('\n')
+        if ("john" in str([0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Prohibited Software John Removed&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+        c = o("dpkg -l | grep 'hydra'").read().split('\n')
+        if ("hydra" in str([0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Prohibited Software Hydra Removed&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("dpkg -l | grep 'doomsday'").read().split('\n')
+        if ("doomsday" in str([0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Prohibited Software Doomsday Removed&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 def user_auditing():
         return
 
