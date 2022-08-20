@@ -160,35 +160,59 @@ def forensic_question():
                 vulns = (vulns + 1)
 def local_policy():
         c = o("grep 'net.ipv4.tcp_syncookies' /etc/sysctf.conf").read().split('\n')
+        k = o("cat /proc/sys/net/ipv4/tcp_syncookies").read().split('\n')
         if ("1" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>IPv4 TCP SYN cookies have been Enabled <i>(net.ipv4.tcp_syncookies = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+        elif ("1" in str(k[0])):
                 points += 2
                 vulns += 1
                 report_append.write("<h3>IPv4 TCP SYN cookies have been Enabled <i>(net.ipv4.tcp_syncookies = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
         c = o("grep 'net.ipv4.conf.all.rp_filter' /etc/sysctl.conf").read().split('\n')
+        k = o("cat /proc/sys/net/ipv4/conf/all/rp_filter").read().split('\n')
         if ("1" in str(c[0])):
                 points += 2
                 vulns += 1
-                report_append.write("<h3>IPv4 IP Spoofing Protection has been Enabled <i>(net.ipv4.conf.all.rp_filter = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+                report_append.write("<h3>IPv4 IP Spoofing Protection has been Enabled <i>(net.ipv4.conf.all.rp_filter = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")       
+        elif ("1" in str(k[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>IPv4 IP Spoofing Protection has been Enabled <i>(net.ipv4.conf.all.rp_filter = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")       
 
         c = o("grep 'net.ipv4.ip_forward' /etc/sysctl.conf").read().split('\n')
+        k = o("cat /proc/sys/net/ipv4/ip_forward").read().split('\n')
         if ("0" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>IPv4 Forwarding has been Disabled <i>(net.ipv4.ip_forward = 0)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+        elif ("0" in str(k[0])):
                 points += 2
                 vulns += 1
                 report_append.write("<h3>IPv4 Forwarding has been Disabled <i>(net.ipv4.ip_forward = 0)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
         c = o("grep 'net.ipv4.icmp_echo_ignore_broadcasts' /etc/sysctl.conf").read().split('\n')
+        k = o("cat /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts").read().split('\n')
         if ("1" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>IPv4 Ignore Broadcast ICMP ECHO Packets has been Enabled <i>(net.ipv4.icmp_echo_ignore_broadcasts = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")     
+        elif ("1" in str(k[0])):
                 points += 2
                 vulns += 1
                 report_append.write("<h3>IPv4 Ignore Broadcast ICMP ECHO Packets has been Enabled <i>(net.ipv4.icmp_echo_ignore_broadcasts = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
         c = o("grep 'kernel.randomize_va_space' /etc/sysctl.conf").read().split('\n')
+        k = o("cat /proc/sys/kernel/randomize_va_space").read().split('\n')
         if ("2" in str(c[0])):
                 points += 2
                 vulns += 1
                 report_append.write("<h3>Address Space Layout Randomization (ASLR) is Enabled <i>( = )</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
-
+        elif ("2" in str(k[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Address Space Layout Randomization (ASLR) is Enabled <i>( = )</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
 def malware():
 
@@ -197,7 +221,7 @@ def operating_system_updates():
         if ("deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main multiverse restricted universe" in str([0])):
                 points += 2
                 vulns += 1
-                report_append.write("<h3>Misconfigured Reccomended Updates Source is Fixed (sources.list)&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+                report_append.write("<h3>Enabled Recommended Updates&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
         c = o("grep 'deb http://security.ubuntu.com/ubuntu/ bionic-security main multiverse restricted universe' /etc/apt/sources.list").read().split('\n')
         if ("deb http://security.ubuntu.com/ubuntu/ bionic-security main multiverse restricted universe" in str(c[0])):
@@ -214,6 +238,68 @@ def prohibited_files():
                 vulns += 1
                 report_append.write("<h3>Removed Prohibited png File&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 def service_auditing():
+#SSHd
+        c = o("grep 'Port' /etc/ssh/sshd_config").read().split('\n')
+        if ("2200" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>SSHd Listens on Port 2200 <i>(/etc/ssh/sshd_config)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+        
+        c = o("grep 'PermitEmptyPasswords' /etc/ssh/sshd_config").read().split('\n')
+        if ("no" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>SSH Does Not Permit Empty Passwords <i>(/etc/ssh/sshd_config)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+        
+        c = o("grep 'Protocol' /etc/ssh/sshd_config").read().split('\n')
+        if ("2" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>SSHd uses Protocol 2 <i>(/etc/ssh/sshd_config)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("grep 'StrictModes' /etc/ssh/sshd_config").read().split('\n')
+        if ("yes" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>SSHd StrictModes is Enabled <i>(/etc/ssh/sshd_config)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("grep 'PermitRootLogin' /etc/ssh/sshd_config").read().split('\n')
+        if ("no" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>SSH Root Login has been Disabled <i>(/etc/ssh/sshd_config)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+        
+        c = o("grep 'PrintLastLog' /etc/ssh/sshd_config").read().split('\n')
+        if ("yes" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>SSH Prints Last Logged User Login <i>(/etc/ssh/sshd_config)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+#Apache2
+        c = o("grep 'ServerSignature' /etc/apache2/apache2.conf").read().split('\n')
+        if ("Off" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Apache2 Web Server Signature is Disabled <i>(/etc/apache2/apache2.conf)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("grep 'ServerTokens' /etc/apache2/apache2.conf").read().split('\n')
+        if ("Prod" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Apache2 Suppress a Server Token in HTTP Response Headers to a Bare Minimal<i>(/etc/apache2/apache2.conf)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        k = o("grep '<Directory /var/www/html>' /etc/apache2/apache2.conf").read().split('\n')
+        c = o("grep 'Options -Indexes' /etc/apache2/apache2.conf").read().split('\n')
+        if ("-Indexes" in str(c[0]) and "Directory /var/www/html" in str(k[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Apache2 Directory Listing Disabled <i>(/etc/apache2/apache2.conf)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("dpkg -l | grep 'libapache2-mod-security'").read().split('\n')
+        if ("libapache2-mod-security" in str(c[0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Apache2 Web Server Signature is Disabled <i>(/etc/apache2/apache2.conf)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
 def uncategorized_operating_system_settings():
 
