@@ -9,13 +9,15 @@ vulns = 0
 #Scoring Report Webpage
 #TODO: CHANGE USER IN PATH BELOW
 report_startup = open("/home/it_support/Desktop/ScoringReport.html", "w")
-website_base_code = ["<!DOCTYPE html>\n\n", "<html lang='en'>\n\n", "<head>\n", "<title>Scoring Report</title>\n", "<meta charset='UTF-8'>\n", "<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n", "<meta http-equiv='refresh' content='30;url=ScoringReport.html'>\n\n", "<link rel='stylesheet' href='.ScoringReport.css'>\n", "</head>\n", "<body>\n", "<div class='main'>\n", "<div class='text'>\n", "<div class='binary' data-binary='1010 0001 00011010 10110101'>\n\n", "<h1>CP Linux Beginner/Intermediate Training Image#2</h1>\n\n", "<p align=center style='width:100%;text-align:center;'>\n", "<img align=middle class='L8_style' src='.layer_8.png' width='212px' height='212px'>\n", "</p>\n\n", "<h2>Report Generated At: <span id='datetime'></span></h2>\n\n", "<h3 class='center'>Current Team ID: PRO <span style='color:red'>--</span></h3>\n\n", "<h2><span style='color:red' class=sed>p</span> out of <span style='color:red'>100</span> points received</h2>\n\n", "<p><b>This is your most recent scoring report:</b></p>\n\n", "<a href='https://www.youtube.com/watch?v=pBrCzsgDpYA'>Click here to see the most recent scoring report with feedback enabled</a><br>\n", "<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'>Click here to view the public scoreboard</a><br>\n", "<p>\n", "<h3>Connection Status: <span style='color:red'>Epic</span></h3>\n\n", "<h3><span style='color:red'>0</span> penalties assessed, for a loss of <span style='color:red'>0</span> points:</h3>\n\n", "<p>\n\n", "</p>\n", "<h3><span style='color:red' class=sed>v</span> out of <span style='color:red'>50</span> scored security issues fixed, for a gain of <span style='color:red' class=sed>p</span> points:</h3>\n", "<p>\n"]
+website_base_code = ["<!DOCTYPE html>\n\n", "<html lang='en'>\n\n", "<head>\n", "<title>Scoring Report</title>\n", "<meta charset='UTF-8'>\n", "<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n", "<meta http-equiv='refresh' content='30;url=ScoringReport.html'>\n\n", "<link rel='stylesheet' href='.ScoringReport.css'>\n", "</head>\n", "<body>\n", "<div class='main'>\n", "<div class='text'>\n", "<div class='binary' data-binary='1010 0001 00011010 10110101'>\n\n", "<h1>CCDC 50 Vulnerability Mojang Image</h1>\n\n", "<p align=center style='width:100%;text-align:center;'>\n", "<img align=middle class='L8_style' src='.layer_8.png' width='212px' height='212px'>\n", "</p>\n\n", "<h2>Report Generated At: <span id='datetime'></span></h2>\n\n", "<h3 class='center'>Current Team ID: CSUN <span style='color:red'>--</span></h3>\n\n", "<h2><span style='color:red' class=sed>p</span> out of <span style='color:red'>100</span> points received</h2>\n\n", "<p><b>This is your most recent scoring report:</b></p>\n\n", "<a href='https://www.youtube.com/watch?v=pBrCzsgDpYA'>Click here to see the most recent scoring report with feedback enabled</a><br>\n", "<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'>Click here to view the public scoreboard</a><br>\n", "<p>\n", "<h3>Connection Status: <span style='color:red'>Working</span></h3>\n\n", "<h3><span style='color:red'>0</span> penalties assessed, for a loss of <span style='color:red'>0</span> points:</h3>\n\n", "<p>\n\n", "</p>\n", "<h3><span style='color:red' class=sed>v</span> out of <span style='color:red'>50</span> scored security issues fixed, for a gain of <span style='color:red' class=sed>p</span> points:</h3>\n", "<p>\n"]
 report_startup.writelines(website_base_code)
 report_startup.close()
 report_append = open("/home/it_support/Desktop/ScoringReport.html", "a")
 
 #Vulns
 def account_policy():
+        global points
+        global vulns
         c = o("grep 'PASS_MAX_DAYS' /etc/login.defs").read().split('\n')
         #Password Policies
         if ((int(str(c[1])[14:]) >= 60) and (int(str(c[1])[14:]) <= 90)):
@@ -216,6 +218,29 @@ def local_policy():
 
 def malware():
 
+        c = o("grep '128.149.135.153' /etc/hosts").read().split('\n')
+        if ("128.149.135.153" in str(c[0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Removed Malicous Google Configuration in Hosts File&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
+        c = o("netstat -tulpn | grep '1337'").read().split('\n')
+        if ("1337" in str(c[0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Removed Netcat Backdoor&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+        c = o("find /var/www/html -iname '404.html'").read().split('\n')
+        if ("404" in str([0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Malicous PHP P0wny webshell is Removed&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+
 def operating_system_updates():
         c = o("grep 'deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main multiverse restricted universe' /etc/apt/sources.list").read().split('\n')
         if ("deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main multiverse restricted universe" in str([0])):
@@ -302,6 +327,11 @@ def service_auditing():
                 report_append.write("<h3>Apache2 Web Server Signature is Disabled <i>(/etc/apache2/apache2.conf)</i>&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
 def uncategorized_operating_system_settings():
+        c = o("grep 'root' /etc/cron.allow").read().split('\n')
+        if ("root" in str([0])):
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Only Root is Allowed Access to Cron&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
 def unwanted_software():
         c = o("dpkg -l | grep 'telnetd'").read().split('\n')
@@ -359,8 +389,42 @@ def unwanted_software():
                 vulns += 1
                 report_append.write("<h3>Prohibited Software Doomsday Removed&nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 def user_auditing():
-        return
+        c = o("grep 'johntheenderman' /etc/passwd").read().split('\n')
+        if ("johntheenderman" in str([0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Removed &nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
+        c = o("grep 'sudo' /etc/group").read().split('\n')
+        if ("johntheenderman" in str([0])):
+                return
+        else:
+                points += 2
+                vulns += 1
+                report_append.write("<h3>Removed &nbsp;&nbsp;&nbsp;[2 Points]</h3>\n")
 
+account_policy()
+defensive_countermeasure()
+forensic_question()
+local_policy()
+malware()
+operating_system_updates()
+prohibited_files()
+service_auditing()
+uncategorized_operating_system_settings()
+unwanted_software()
+user_auditing()
+
+report_append.write("</p>")
+report_append.write("<p align='center' style='text-align: center;'><i>This is a part of the CSUN Layer 8 Computer Security Club Cyberpatriot Trainings</i></p>")
+report_append.write("</div>")
+report_append.write("</div>")
+report_append.write("</div>")
+report_append.write("<p style='text-align:right; bottom: auto; color:black;'>&copy;Diego Cruz</p>")
+report_append.write("</body>")
+javascript = ["<script>\n", "var bin = document.querySelectorAll('.binary');\n", "[].forEach.call(bin, function(el) {\n", "	el.dataset.binary = Array(4096).join(el.dataset.binary + ' ')\n","});\n\n", "var dt = new Date();\n\n", "document.getElementById('datetime').innerHTML = (('0'+dt.getHours()).slice(-2)) +':'+ (('0'+dt.getMinutes()).slice(-2)) + ':'+ (('0'+dt.getSeconds()).slice(-2)) + ' '+ ((dt.getFullYear()) +'-'+ (('0'+(dt.getMonth()+1)).slice(-2)) +'-'+ ('0'+dt.getDate()).slice(-2)) + ' UTC';\n", "</script>\n"]
+report_append.writelines(javascript)
 report_append.close()
 #TODO: CHANGE USER IN FILE PATH BELOW
 os.system("sed -i 's/class=sed>v</class=sed>{}</g' /home/it_support/Desktop/ScoringReport.html".format(vulns))
