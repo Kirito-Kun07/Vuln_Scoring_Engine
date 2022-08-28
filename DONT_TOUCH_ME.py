@@ -1,4 +1,4 @@
-#!/usr/bin/python3.6
+#!/usr/bin/env python3
 #from glob import iglob
 import os
 o = os.popen
@@ -6,10 +6,53 @@ o = os.popen
 points = 0
 vulns = 0
 
+# Modify the following accordingly
+unwanted_software_list	= [
+	"Telnetd",
+	"VSFTPd",
+	"Minetest-Server",
+	"Nmap",
+	"John",
+	"Hydra",
+	"Doomsday"
+]
+
 #Scoring Report Webpage
 #TODO: CHANGE USER IN PATH BELOW
 report_startup = open("/opt/Vuln_Scoring_Engine/ScoringReport.html", "w")
-website_base_code = ["<!DOCTYPE html>\n\n", "<html lang='en'>\n\n", "<head>\n", "<title>Scoring Report</title>\n", "<meta charset='UTF-8'>\n", "<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n", "<meta http-equiv='refresh' content='30;url=ScoringReport.html'>\n\n", "<link rel='stylesheet' href='.ScoringReport.css'>\n", "</head>\n", "<body>\n", "<div class='main'>\n", "<div class='text'>\n", "<div class='binary' data-binary='1010 0001 00011010 10110101'>\n\n", "<h1>CCDC 50 Vulnerability Mojang Image</h1>\n\n", "<p align=center style='width:100%;text-align:center;'>\n", "<img align=middle class='L8_style' src='.layer_8.png' width='212px' height='212px'>\n", "</p>\n\n", "<h2>Report Generated At: <span id='datetime'></span></h2>\n\n", "<p class='center'>Current Team ID: CSUN <span style='color:red'>--</span></p>\n\n", "<h2><span style='color:red' class=sed>p</span> out of <span style='color:red'>100</span> points received</h2>\n\n", "<p><b>This is your most recent scoring report:</b></p>\n\n", "<a href='https://www.youtube.com/watch?v=pBrCzsgDpYA'>Click here to see the most recent scoring report with feedback enabled</a><br>\n", "<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'>Click here to view the public scoreboard</a><br>\n", "<p>\n", "<h3>Connection Status: <span style='color:red'>Working</span></h3>\n\n", "<h3><span style='color:red'>0</span> penalties assessed, for a loss of <span style='color:red'>0</span> points:</h3>\n\n", "<p>\n\n", "</p>\n", "<h3><span style='color:red' class=sed>v</span> out of <span style='color:red'>50</span> scored security issues fixed, for a gain of <span style='color:red' class=sed>p</span> points:</h3>\n", "<p>\n"]
+website_base_code = [
+	"<!DOCTYPE html>\n\n",
+	"<html lang='en'>\n\n",
+	"<head>\n",
+	"<title>Scoring Report</title>\n",
+	"<meta charset='UTF-8'>\n",
+	"<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n",
+	"<meta http-equiv='refresh' content='30;url=ScoringReport.html'>\n\n",
+	"<link rel='stylesheet' href='.ScoringReport.css'>\n",
+	"</head>\n",
+	"<body>\n",
+	"<div class='main'>\n",
+	"<div class='text'>\n",
+	"<div class='binary' data-binary='1010 0001 00011010 10110101'>\n\n",
+	"<h1>CCDC 50 Vulnerability Mojang Image</h1>\n\n",
+	"<p align=center style='width:100%;text-align:center;'>\n",
+	"<img align=middle class='L8_style' src='.layer_8.png' width='212px' height='212px'>\n",
+	"</p>\n\n",
+	"<h2>Report Generated At: <span id='datetime'></span></h2>\n\n",
+	"<p class='center'>Current Team ID: CSUN <span style='color:red'>--</span></p>\n\n",
+	"<h2><span style='color:red' class=sed>p</span> out of <span style='color:red'>100</span> points received</h2>\n\n",
+	"<p><b>This is your most recent scoring report:</b></p>\n\n",
+	"<a href='https://www.youtube.com/watch?v=pBrCzsgDpYA'>Click here to see the most recent scoring report with feedback enabled</a><br>\n",
+	"<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'>Click here to view the public scoreboard</a><br>\n",
+	"<p>\n",
+	"<h3>Connection Status: <span style='color:red'>Working</span></h3>\n\n",
+	"<h3><span style='color:red'>0</span> penalties assessed, for a loss of <span style='color:red'>0</span> points:</h3>\n\n",
+	"<p>\n\n",
+	"</p>\n",
+	"<h3><span style='color:red' class=sed>v</span> out of <span style='color:red'>50</span> scored security issues fixed, for a gain of <span style='color:red' class=sed>p</span> points:</h3>\n",
+	"<p>\n"
+]
+
 report_startup.writelines(website_base_code)
 report_startup.close()
 report_append = open("/opt/Vuln_Scoring_Engine/ScoringReport.html", "a")
@@ -19,7 +62,7 @@ def account_policy():
 	global points
 	global vulns
 	c = o("grep 'PASS_MAX_DAYS' /etc/login.defs").read().split('\n')
-        #Password Policies
+	#Password Policies
 	if ((int(str(c[1])[14:]) >= 60) and (int(str(c[1])[14:]) <= 90)):
 		points += 2
 		vulns += 1
@@ -59,42 +102,23 @@ def account_policy():
 
 	#c = o("grep 'ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1' /etc/pam.d/common-password").read().split('\n')
 	c = o("grep 'pam.cracklib' /etc/pam.d/common-password").read().split('\n')
-	if ("ucredit=-1" in str(c[0])):
-		if ("lcredit=-1" in str(c[0])):
-			if ("dcredit=-1" in str(c[0])):
-				if ("ocredit=-1" in str(c[0])):
-					points += 2
-					vulns += 1
-					report_append.write("<p>Passwords Must Meet Complexity Requirements (1 uppercase, 1 lowercase, 1 digit, 1 special character)&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-
-	c = o("grep 'remember=5' /etc/pam.d/common-password").read().split('\n')
-	if ("remember=5" in str(c[0])):
+	if all(["ucredit=-1" in str(c[0]),
+		"lcredit=-1" in str(c[0]),
+		"dcredit=-1" in str(c[0]),
+		"ocredit=-1" in str(c[0])]):
 		points += 2
 		vulns += 1
-		report_append.write("<p>Previous passwords are remembered (5-10)&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-	elif ("remember=6" in str(c[0])):
-		points += 2
-		vulns += 1
-		report_append.write("<p>Previous passwords are remembered (5-10)&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-	elif ("remember=7" in str(c[0])):
-		points += 2
-		vulns += 1
-		report_append.write("<p>Previous passwords are remembered (5-10)&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-	elif ("remember=8" in str(c[0])):
-		points += 2
-		vulns += 1
-		report_append.write("<p>Previous passwords are remembered (5-10)&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-	elif ("remember=9" in str(c[0])):
-		points += 2
-		vulns += 1
-		report_append.write("<p>Previous passwords are remembered (5-10)&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-	elif ("remember=10" in str(c[0])):
-		points += 2
-		vulns += 1
-		report_append.write("<p>Previous passwords are remembered (5-10)&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-
-	c = o("grep -R 'sha512' /etc/pam.d/common-password").read().split('\n')
-	if ("sha512" in str(c[1])):
+		report_append.write("<p>Passwords Must Meet Complexity Requirements (1 uppercase, 1 lowercase, 1 digit, 1 special character)&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
+	c = open("/etc/pam.d/common-password", 'r').read()
+	for i in range(5, 11):
+		if f"remember={i}" in c:
+			points += 2
+			vulns += 1
+			report_append.write("<p>Previous passwords are remembered (5-10)&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
+			continue
+    
+	c = open("/etc/pam.d/common-password", 'r').read()
+	if "sha512" in c:
 		points += 2
 		vulns += 1
 		report_append.write("<p>A Secure Password Hashing Algorithm is Used (Sha512)&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
@@ -103,8 +127,8 @@ def defensive_countermeasure():
 	global points
 	global vulns
 	c = o("sudo ufw status verbose").read().split('\n')
-        #c = str(c[0])
-        #Firewall enabled, logging on, logging mode set
+	#c = str(c[0])
+	#Firewall enabled, logging on, logging mode set
 	if (": active" in str(c[0])):
 		points += 2
 		vulns += 1
@@ -158,6 +182,7 @@ def defensive_countermeasure():
 		points += 2
 		vulns += 1
 		report_append.write("<p>Auditd is Installed&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
+
 def forensic_question():
 	global points
 	global vulns
@@ -174,6 +199,7 @@ def forensic_question():
 		report_append.write("<p>Inject Docker Installation Task has been Completed&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
 		points = (points + 2)
 		vulns = (vulns + 1)
+
 def local_policy():
 	global points
 	global vulns
@@ -193,11 +219,11 @@ def local_policy():
 	if ("1" in str(c[0])):
 		points += 2
 		vulns += 1
-		report_append.write("<p>IPv4 IP Spoofing Protection has been Enabled <i>(net.ipv4.conf.all.rp_filter = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")       
+		report_append.write("<p>IPv4 IP Spoofing Protection has been Enabled <i>(net.ipv4.conf.all.rp_filter = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")	
 	elif ("1" in str(k[0])):
 		points += 2
 		vulns += 1
-		report_append.write("<p>IPv4 IP Spoofing Protection has been Enabled <i>(net.ipv4.conf.all.rp_filter = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")       
+		report_append.write("<p>IPv4 IP Spoofing Protection has been Enabled <i>(net.ipv4.conf.all.rp_filter = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")	
 
 	c = o("grep 'net.ipv4.ip_forward' /etc/sysctl.conf").read().split('\n')
 	k = o("cat /proc/sys/net/ipv4/ip_forward").read().split('\n')
@@ -215,7 +241,7 @@ def local_policy():
 	if ("1" in str(c[0])):
 		points += 2
 		vulns += 1
-		report_append.write("<p>IPv4 Ignore Broadcast ICMP ECHO Packets has been Enabled <i>(net.ipv4.icmp_echo_ignore_broadcasts = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")     
+		report_append.write("<p>IPv4 Ignore Broadcast ICMP ECHO Packets has been Enabled <i>(net.ipv4.icmp_echo_ignore_broadcasts = 1)</i>&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")	   
 	elif ("1" in str(k[0])):
 		points += 2
 		vulns += 1
@@ -275,7 +301,7 @@ def operating_system_updates():
 def prohibited_files():
 	global points
 	global vulns
-        #TODO: change user in path below
+	#TODO: change user in path below
 	c = o("find /home/steve/ -iname '.meme.png'").read().split('\n')
 	if ("meme" not in str(c[0])):
 		#return
@@ -366,61 +392,14 @@ def uncategorized_operating_system_settings():
 def unwanted_software():
 	global points
 	global vulns
-	c = o("dpkg -l | grep 'telnetd'").read().split('\n')
-	if ("telnetd" not in str(c[0])):
-		#return
-	#else:
-		points += 2
-		vulns += 1
-		report_append.write("<p>Telnetd Service has been Disabled or Removed&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
+	installed_packages = o("dpkg -l").read()
+	for software in unwanted_software_list:
+		if software.lower() not in installed_packages.lower():
+			points += 2
+			vulns += 1
+			report_append.write(f"<p>{software} has been Disabled or Removed&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
+	
 
-	c = o("dpkg -l | grep 'vsftpd'").read().split('\n')
-	if ("vsftpd" not in str(c[0])):
-		#return
-	#else:
-		points += 2
-		vulns += 1
-		report_append.write("<p>VSFTPd Service has been Disabled or Removed&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-
-	c = o("dpkg -l | grep 'minetest-server'").read().split('\n')
-	if ("minetest-server" not in str(c[0])):
-		#return
-	#else:
-		points += 2
-		vulns += 1
-		report_append.write("<p>Minetest-Server Service has been Disabled or Removed&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-
-	c = o("dpkg -l | grep 'nmap'").read().split('\n')
-	if ("nmap" not in str(c[0])):
-		#return
-	#else:
-		points += 2
-		vulns += 1
-		report_append.write("<p>Prohibited Software Nmap Removed&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-
-	c = o("dpkg -l | grep 'john'").read().split('\n')
-	print(str(c[0]))
-	if ("john" not in str(c[0])):
-		#return
-	#else:
-		points += 2
-		vulns += 1
-		report_append.write("<p>Prohibited Software John Removed&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-	c = o("dpkg -l | grep 'hydra'").read().split('\n')
-	if ("hydra" not in str(c[0])):
- 		#return
-	#else:
-		points += 2
-		vulns += 1
-		report_append.write("<p>Prohibited Software Hydra Removed&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-
-	c = o("dpkg -l | grep 'doomsday'").read().split('\n')
-	if ("doomsday" not in str(c[0])):
-		#return
-	#else:
-		points += 2
-		vulns += 1
-		report_append.write("<p>Prohibited Software Doomsday Removed&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
 def user_auditing():
 	global points
 	global vulns
