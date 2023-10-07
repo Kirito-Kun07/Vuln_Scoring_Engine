@@ -2,7 +2,7 @@
 #from glob import iglob
 import os
 o = os.popen
-
+test ="test"
 points = 0
 vulns = 0
 
