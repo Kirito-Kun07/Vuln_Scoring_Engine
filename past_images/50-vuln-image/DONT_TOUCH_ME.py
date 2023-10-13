@@ -249,14 +249,14 @@ def local_policy():
 
 	c = o("grep 'kernel.randomize_va_space' /etc/sysctl.conf").read().split('\n')
 	k = o("cat /proc/sys/kernel/randomize_va_space").read().split('\n')
-	if ("2" in str(c[0])):
+	if ("2" or "1" in str(c[0])):
 		points += 2
 		vulns += 1
-		report_append.write("<p>Address Space Layout Randomization (ASLR) is Enabled <i>(kernel.randomize_va_space = 2)</i>&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
-	elif ("2" in str(k[0])):
+		report_append.write("<p>Address Space Layout Randomization (ASLR) is Enabled <i>(kernel.randomize_va_space = 1 or 2)</i>&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
+	elif ("2" or "1" in str(k[0])):
 		points += 2
 		vulns += 1
-		report_append.write("<p>Address Space Layout Randomization (ASLR) is Enabled <i>(kernel.randomize_va_space = 2)</i>&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
+		report_append.write("<p>Address Space Layout Randomization (ASLR) is Enabled <i>(kernel.randomize_va_space = 1 or 2)</i>&nbsp;&nbsp;&nbsp;[2 Points]</p>\n")
 
 def malware():
 	global points
